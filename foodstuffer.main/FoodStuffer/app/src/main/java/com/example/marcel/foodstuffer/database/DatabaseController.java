@@ -2,8 +2,11 @@ package com.example.marcel.foodstuffer.database;
 
 import android.util.Log;
 
+import com.example.marcel.foodstuffer.dataholder.AndroidContext;
 import com.example.marcel.foodstuffer.dataholder.Food;
+import com.example.marcel.foodstuffer.dataholder.FoodGroup;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -11,33 +14,26 @@ import java.sql.Statement;
 
 /**
  * Created by Marcel on 14.06.2017.
+ * Auskommentiert damit es nicht direkt implementiert werden muss.
  */
 
-public class DatabaseController
+class DatabaseController //extends InformationHandling
 {
-    private static DatabaseController defaultInstance = null;
+    /*
+    private static final String DATABASE_FILE_NAME = "foodstuffer.db";
 
     private Connection c = null;
 
-    public static DatabaseController getDefault()
-    {
-        if(defaultInstance == null)
-        {
-            defaultInstance = new DatabaseController();
-        }
-        return defaultInstance;
-    }
-
-    private DatabaseController()
+    DatabaseController()
     {
         //SQLite Tutorial https://www.tutorialspoint.com/sqlite/sqlite_java.htm
         //Create connection to the database
         try
         {
             Class.forName("org.sqlite.JDBC");
-            String databaseFile = getDatabaseFile();
+            File databaseFile = getDatabaseFile();
             ensureDatabaseExists(databaseFile);
-            c = DriverManager.getConnection("jdbc:sqlite:" + databaseFile);
+            c = DriverManager.getConnection("jdbc:sqlite:" + databaseFile.toString());
         }
         catch (Exception e)
         {
@@ -48,8 +44,18 @@ public class DatabaseController
     /**
      * Checks if the database file exists.<br>
      * If the database file does not exist, the file is created with all tables.
-     */
-    private void ensureDatabaseExists(String databaseFile)
+     * /
+    private void ensureDatabaseExists(File databaseFile)
+    {
+        if(databaseFile.exists())
+        {
+            //File exists nothing to do here.
+            return;
+        }
+        createDatabaseWithDefaultContent(databaseFile);
+    }
+
+    private void createDatabaseWithDefaultContent(File databaseFile)
     {
         //TODO: implementieren
     }
@@ -58,7 +64,8 @@ public class DatabaseController
      * Writes the food object into the database
      * @param food
      * @return
-     */
+     * /
+    @Override
     public boolean saveNewItem(Food food)
     {
         try
@@ -76,6 +83,12 @@ public class DatabaseController
         }
     }
 
+    @Override
+    public boolean saveNewItem(FoodGroup group)
+    {
+        return false;
+    }
+
     private String getSqlCreationString(Food food)
     {
         //TODO: SQL-String erstellen
@@ -86,10 +99,10 @@ public class DatabaseController
     /**
      * Returns the path to the database file.
      * @return
-     */
-    public String getDatabaseFile()
+     * /
+    private File getDatabaseFile()
     {
-        //TODO: implementieren
-        return "";
+        return new File(AndroidContext.getContext().getFilesDir(), DATABASE_FILE_NAME);
     }
+    */
 }

@@ -1,15 +1,18 @@
 package com.example.marcel.foodstuffer;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.example.marcel.foodstuffer.database.InformationHandling;
+import com.example.marcel.foodstuffer.dataholder.Food;
 
 public class OverviewActivity extends AppCompatActivity
 {
@@ -18,6 +21,7 @@ public class OverviewActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_overview);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -32,6 +36,24 @@ public class OverviewActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        addItems();
+    }
+
+    private void addItems()
+    {
+        // Create a LinearLayout element
+        LinearLayout ll = (LinearLayout) findViewById(R.id.scrollViewLayout);
+        ll.setOrientation(LinearLayout.VERTICAL);
+
+        // Add items
+        for(Food item : InformationHandling.getDefault().getAllFoodItems())
+        {
+            //ll.addView(new FoodView(getApplicationContext(), item));
+            TextView textView = new TextView(getApplicationContext());
+            textView.setText(item.getName() + " - " + item.getExpirationDate().toString());
+            ll.addView(textView);
+        }
     }
 
     @Override
